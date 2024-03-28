@@ -29,7 +29,7 @@ public class GraphMatcher
     internal Dictionary<int, int> Inout1;
     internal Dictionary<int, int> Inout2;
 
-    public Dictionary<int, int> Mapping;
+    public GraphMatch Mapping;
 
 #pragma warning disable CS8618
     public GraphMatcher(IGraph<int, Edge<int>> g1, IGraph<int, Edge<int>> g2)
@@ -50,7 +50,7 @@ public class GraphMatcher
         Core2 = new Dictionary<int, int>();
         Inout1 = new Dictionary<int, int>();
         Inout2 = new Dictionary<int, int>();
-        Mapping = new Dictionary<int, int>();
+        Mapping = new GraphMatch();
         _state = new GraphMatcherState(this);
     }
 
@@ -94,11 +94,11 @@ public class GraphMatcher
         return Match();
     }
 
-    private IEnumerable<Dictionary<int, int>> Match()
+    public IEnumerable<Dictionary<int, int>> Match()
     {
         if (Core1.Count == G2.Vertices.Count)
         {
-            Mapping = new Dictionary<int, int>(Core1); //copy
+            Mapping = new GraphMatch(Core1, G1, G2); 
             yield return Mapping;
         }
         else
